@@ -1,11 +1,13 @@
 package com.example.springmvc.basic.request;
 
+import com.example.springmvc.basic.HelloData;
 import java.io.IOException;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -93,6 +95,35 @@ public class RequestParamController {
     @RequestMapping("/request-param-map")
     public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
         log.info("username = {}, age = {}", paramMap.get("username"), paramMap.get("age"));
+
+        return "ok";
+    }
+
+    /*
+    * @ModelAttribute는
+    * HelloData 객체를 생성하고
+    * 요청 파라미터의 이름으로 helloData 객체의 프로퍼티를 찾는다.
+    * 그리고 해당 객체의 setter를 호출해서 값을 바인딩한다.
+    *
+    * age=abc 처럼 잘못된 값이 일어나면 BindException이 발생한다.
+    * */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) {
+        log.info("username = {}, age = {}", helloData.getUsername(), helloData.getAge());
+
+        return "ok";
+    }
+
+
+    /*
+    * @ModelAttribute도 생략이 가능하다.
+    * 스프링은 만약 인자가 단순 타입이면 @RequestParam을 적용하고 아니면 @ModelAttribute를 적용한다.
+    * */
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) {
+        log.info("username = {}, age = {}", helloData.getUsername(), helloData.getAge());
 
         return "ok";
     }
