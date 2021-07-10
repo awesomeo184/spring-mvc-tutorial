@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /*
 * 여기서 itemRepository의 주입이 어떻게 일어나는가?
@@ -49,13 +50,29 @@ public class BasicItemController {
     * 또한 이름을 넘겨주면 Model에 해당 이름으로 객체를 자동으로 넘겨준다.
     * 이름을 생략하면 객체의 클래스명에 첫글자를 소문자로 바꾼 뒤 이름을 넘긴다.
     * */
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String save(@ModelAttribute("item") Item item) {
 
         itemRepository.save(item);
 //        model.addAttribute("item", item); @ModelAttribute에 name 지정해주면 생략가능
         return "basic/item";
     }
+
+//    @PostMapping("/add")
+    public String save1(Item item) {
+        itemRepository.save(item);
+        return "redirect:/basic/items /";
+    }
+
+    @PostMapping("/add")
+    public String save2(Item item, RedirectAttributes redirectAttributes) {
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+
+        return "redirect:/basic/items/{itemId}";
+    }
+
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
@@ -69,9 +86,6 @@ public class BasicItemController {
         itemRepository.update(itemId, item);
         return "redirect:/basic/items/{itemId}";
     }
-
-
-
 
 
     @PostConstruct
