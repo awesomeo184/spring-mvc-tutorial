@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /*
@@ -35,6 +37,27 @@ public class BasicItemController {
         model.addAttribute("item", item);
         return "basic/item";
     }
+
+    @GetMapping("/add")
+    public String addForm() {
+        return "basic/addForm";
+    }
+
+
+    /*
+    * @ModelAttribute는 Item 객체를 생성해주고 요청 파라미터의 값을 세터로 설정해준다.
+    * 또한 이름을 넘겨주면 Model에 해당 이름으로 객체를 자동으로 넘겨준다.
+    * 이름을 생략하면 객체의 클래스명에 첫글자를 소문자로 바꾼 뒤 이름을 넘긴다.
+    * */
+    @PostMapping("/add")
+    public String save(@ModelAttribute("item") Item item) {
+
+        itemRepository.save(item);
+//        model.addAttribute("item", item); @ModelAttribute에 name 지정해주면 생략가능
+        return "basic/item";
+    }
+
+
 
 
     @PostConstruct
