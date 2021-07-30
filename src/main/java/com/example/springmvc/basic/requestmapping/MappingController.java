@@ -38,6 +38,7 @@ public class MappingController {
 
     /*
      * @PathVariable
+     * 많이 사용하는 스타일
      *
      * 변수 명이 같으면 생략가능: @PathVariable String userId
      * /mapping/userA*/
@@ -65,6 +66,7 @@ public class MappingController {
      * params = {"mode=debug","data=good"}
      *
      * 특정 파라미터가 있어야만 메서드가 호출된다(잘 사용할 일은 없다).
+     * 없으면 400 Bad Request
      */
     @GetMapping(value = "/mapping-param", params = "mode=debug")
     public String mappingParam() {
@@ -108,6 +110,7 @@ public class MappingController {
      * produces = "!text/html" * produces = "text/*"
      * produces = "*\/*"
      * 이 예제에서는 Accept가 만약 application/json이라면 406 Not Acceptable 반환
+     * 하드코딩 값보다 MediaType 상수를 쓰는 것이 더 바람직하다.
     */
     @PostMapping(value = "/mapping-produce", produces = MediaType.TEXT_HTML_VALUE)
     public String mappingProduces() {

@@ -80,6 +80,7 @@ public class RequestParamController {
 
     /*
     * 빈 문자의 경우에도 디폴트값이 들어감
+    * 파라미터 이름만 있고 값이 없는 경우에 빈문자열로 통과됨
     * */
     @ResponseBody
     @RequestMapping("/request-param-default")
